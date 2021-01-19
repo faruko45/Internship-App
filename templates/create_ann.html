@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+{% block title %}create announcement{% endblock %}
+{% block content %}
+  <form action="{{ url_for('create_announcement') }}" method="POST" enctype="multipart/form-data" style = "padding-left: 5%; padding-right: 5%;">
+    <h1>Create Announcement</h1>
+    <br>
+    <div class="msg">{{ msg }}</div>
+    <div class="form-group">
+      <label for="a_topic">Topic:</label>
+      <input id="a_topic" name="a_topic" type="text" placeholder="Enter Topic" class="form-control" />
+    </div>
+    <div class="form-group">
+      <label for="a_date">Date:</label>
+      <input id="a_date" name="a_date" type="date" placeholder="Enter Date" class="form-control"/>
+    </div>
+    <div class="form-group">
+      <label for="a_department">Department:</label>
+      <select name="a_department" id="a_department" class = "form-control">
+        {% for dep in deps%}
+        <option value='{{ dep.id }}'>{{ dep.dname }}</option>
+        {% endfor %}
+    </select>
+    </div>
+    <div class="form-group">
+      <label for="a_text">Description:</label>
+      <textarea class = "form-control" id="a_text" name="a_text" rows="4" cols="50">Please enter some description.</textarea>
+    </div>
+    <div class="form-group">
+      <label for="a_photo">Upload a picture:</label>
+      <input class = "form-control-file" type="file" id="a_photo" name="a_photo" accept="image/png, image/jpeg, image/jpg">
+    </div>
+    <div class = "form-group">
+      <input type="submit" class="btn btn-primary" value="Submit">
+    </div>
+  </form>
+{% endblock %}

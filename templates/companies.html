@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% block title %}Companies{% endblock %}
+{% block content %} 
+
+<ul>
+    {% for comp in companies %}
+    <li><a href="{{url_for('company_page',c_id = comp.id)}}">{{comp.companyName }}</a></li>
+    {% endfor %}
+</ul>
+
+
+
+
+{% endblock %}

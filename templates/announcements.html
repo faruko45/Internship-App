@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+{% block title %}Announcements{% endblock %}
+{% block content %} 
+<h3>Your Announcements</h3>
+<hr>
+<h4>Ongoing Announcements</h4>
+    <div class="row justify-content-center">
+        {% for val in values %}
+        {% if val.expired == False %}
+            
+              <div class="card" style = "width: 17rem; margin: 2%">
+                <img class="card-img-top" src="data:image/png;base64,{{ val.photo }}" alt="Card image cap" style="height:200px ; width: 17rem;">
+                <div class="card-body">
+                  <h4 class="card-title">{{val.topic}}</h5>
+                  <p class="card-text">{{ val.companyName}}</p>
+                  <p class="card-text">{{val.dname}}</p>
+                  <p class="card-text">{{val.announcement_date}}</p>
+                  <a href="{{ url_for('announcement',ann_key = val.id)}}" class="btn btn-primary">Go Announcement</a>
+                </div>
+              </div>
+        {% endif%}
+        {% endfor %}
+    </div>
+    <h4>Expired Announcements</h4>
+    <div class="row justify-content-center">
+
+        {% for val in values %}
+        {% if val.expired == True %}
+            
+              <div class="card" style = "width: 17rem; margin: 2%">
+                <img class="card-img-top" src="data:image/png;base64,{{ val.photo }}" alt="Card image cap" style="height:200px ; width: 17rem;">
+                <div class="card-body">
+                  <h4 class="card-title">{{val.topic}}</h5>
+                  <p class="card-text">{{ val.companyName}}</p>
+                  <p class="card-text">{{val.dname}}</p>
+                  <p class="card-text">{{val.announcement_date}}</p>
+                  <a href="{{ url_for('announcement',ann_key = val.id)}}" class="btn btn-primary">Go Announcement</a>
+                </div>
+              </div>
+        {% endif%}
+        {% endfor %}
+    </div>
+
+
+{% endblock %}

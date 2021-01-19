@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% block title %}index{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <h2>Welcome {{ session.name }}! </h2>
+    {% if 'company' in session.status %}
+    <h5 style = "padding: 5%">
+        <br>
+        This is an internship announcement system. As a company, you can create new announcements for your departments and 
+        reach lots of students. Click the button and start to find new interns!
+    </h5>
+    <form action="{{ url_for('create_announcement') }}" method = "GET">
+        <button class = "btn btn-primary">Create Announcement</button>
+    </form>
+    {% endif %}
+    {% if 'student' in session.status %}
+    <h5 style = "padding: 5%">
+        <br>
+        This is an internship announcement system. As a student, you can find lots of new internship announcements and companies. Click the
+        button, edit your profile and take the first step to the bussiness life!
+    </h5>
+    <form action="{{ url_for('profile') }}" method = "GET">
+        <button class = "btn btn-primary">Manage Profile</button>
+    </form>
+    {% endif %}
+</div> 
+{% endblock %}

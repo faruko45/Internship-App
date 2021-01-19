@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block title %}index{% endblock %}
+{% block content %} 
+<h3>Edit Profile</h3><hr>   
+<form action="{{ url_for('edit_text') }}" method = 'POST'>
+    <div class="form-group">
+        {% for text in texts %}
+        <textarea id="{{text.id}}" name="{{text.id}}" rows="4" cols="50" class = "form-control">{{ text.content }}</textarea><br><br>
+        {% endfor %}
+        <input type="submit" class="btn btn-primary" value="Save Changes">
+    </div>
+</form>
+<form action="{{ url_for('edit_text') }}" method = 'POST'>
+    <div class="form-group">
+        <textarea id="addText" name="addText" rows="4" cols="50" class = "form-control">Write here to add new text...</textarea><br>
+        <input type="submit" class="btn btn-primary float_left" value="Add New Text">
+    </div>
+</form>
+<form action="{{ url_for('profile')}}", method = 'GET'>
+    <input type="submit" class="btn btn-primary float-right" value="Back">
+</form>
+
+{% endblock %}

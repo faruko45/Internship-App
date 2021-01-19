@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+{% if session.loggedin %}
+    {% if 'student' in session.status %}
+    <h3 class = "float-left">Announcements</h3>
+    <form action="{{ url_for('homepage')}}", method = "GET">
+        <input type="submit" class="btn btn-primary float-right" value="Reset">
+    </form>
+    <br><br>
+    <form action="{{url_for('homepage')}}" method = "POST">
+        <div class="form-group">
+            <label for="department">Department:</label>
+            <select name="department" id="department" class = "form-control">
+                <option value='all'>All</option>
+                {% for dep in deps%}
+                <option value='{{ dep.id }}'>{{ dep.dname }}</option>
+                {% endfor %}
+            </select>
+            <label for="company">Company:</label>
+            <select name="company" id="company" class = "form-control">
+                <option value='all'>All</option>
+                {% for com in comps%}
+                <option value='{{ com.id }}'>{{ com.companyName }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <input type="submit" class="btn btn-primary" value="Search">
+    </form>
+        <div class="row justify-content-center">
+            {% for val in values %}
+            {% if val.expired == False %}
+                  <div class="card" style = "width: 17rem; margin: 2%">
+                    <img class="card-img-top" src="data:image/png;base64,{{ val.photo }}" alt="Card image cap" style="height:200px ; width: 17rem;">
+                    <div class="card-body">
+                      <h4 class="card-title">{{val.topic}}</h5>
+                      <p class="card-text">{{ val.companyName}}</p>
+                      <p class="card-text">{{val.dname}}</p>
+                      <p class="card-text">{{val.announcement_date}}</p>
+                      <a href="{{ url_for('announcement',ann_key = val.id)}}" class="btn btn-primary">Go Announcement</a>
+                    </div>
+                  </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endif %}
+{% endblock %}

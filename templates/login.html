@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+{% block title %}login{% endblock %}
+{% block content %} 
+
+    {% if 'Incorrect' in msg %}
+    <div class="alert alert-danger" role="alert" style = "text-align: center;">
+      Incorrect <a href="#" class="alert-link">Username/Password</a>. 
+    </div>
+    {% endif %}
+
+  <div class="row justify-content-around">
+    <div align="center" class="box col-3">
+      <div class="form-group">
+        <h3>Login for Students</h3>
+        <hr />
+        <form action="{{ url_for('login') }}" method="post">
+          <label for="email">E-mail</label>
+          <input id="email" name="email" type="text" placeholder="Enter Your e-mail" class="form-control" /></br></br>
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" placeholder="Enter Your Password"
+            class="form-control" /></br></br>
+          <input type="submit" class="btn btn-primary" value="Sign In"></br></br>
+        </form>
+        <p class="bottom">Dont't have an account? <a class="bottom" href="{{url_for('registerForStudent')}}"> Sign Up
+            here</a></p>
+      </div>
+    </div>
+    <div align="center" class="box col-3">
+      <div class="form-group">
+        <h3>Login for Companies</h3>
+        <hr />
+        <form action="{{ url_for('login') }}" method="post">
+          <label for="c_email">E-mail</label>
+          <input id="c_email" name="c_email" type="text" placeholder="Enter Your e-mail"
+            class="form-control" /></br></br>
+          <label for="password">Password</label>
+          <input id="c_password" name="c_password" type="password" placeholder="Enter Your Password"
+            class="form-control" /></br></br>
+          <input type="submit" class="btn btn-primary" value="Sign In"></br></br>
+        </form>
+        <p class="bottom">Dont't have an account? <a class="bottom" href="{{url_for('registerForCompany')}}"> Sign Up
+            here</a></p>
+      </div>
+    </div>
+  </div>
+{% endblock %}

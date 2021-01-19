@@ -1,0 +1,78 @@
+{% extends "layout.html" %}
+{% block title %} Profile {% endblock %}
+{% block content %} 
+
+<h3 style = "text-align: center;">{{ informations.companyName }}</h3>
+<hr>
+<div class="row justify-content-center">
+    {% for photo in company_photos %}
+    <img src= "data:image/png;base64,{{ photo.photo }}" alt="Profile Photo" class="img-thumbnail rounded float-left" style = "width: 15em; height: 15em;">
+    {% endfor %}
+</div>
+<hr>
+<div class="row">
+    <div class="col-5">
+        <h4>About Us:</h4>
+        {% for text in texts %}
+            {{ text.content }} <br>   
+        {% endfor %}
+    </div>
+    <div class="col-7">
+        <h4>Announcements:</h4>
+        <table class="table">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col">Topic</th>
+                <th scope="col">Department</th>
+                <th scope="col">Due date</th>
+                <th scope="col">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for ann in announcements %}
+              <tr>
+                <td>{{ ann.topic }}</td>
+                <td>{{ ann.dname }}</td>
+                <td>{{ ann.announcement_date }}</td>
+                <td>{% if ann.expired == False %}Ongoing{% else %}Expired{% endif %}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        
+    </div>
+</div>
+{% if 'company' in session.status %}
+<form action = "{{ url_for('edit_text') }}" method = "GET">
+    <button class = "btn btn-primary">Edit Texts</button>
+</form>
+<br>
+<form action = "{{ url_for('delete_profile') }}" method = "GET">
+    <div class="form-group">
+        <button class = "btn btn-danger">DELETE MY ACCOUNT</button>
+    </div>
+</form>
+<br>
+<form action = "{{ url_for('edit_profile') }}" method = "GET">
+    <div class="form-group">
+        <button class = "btn btn-primary">Edit Other Informations</button>
+    </div>
+</form>
+<br>
+<form action = "{{ url_for('edit_photo') }}" method = "GET">
+    <button class = "btn btn-primary">Edit Photos</button>
+</form>
+<form action = "{{ url_for('profile') }}" method = "POST" enctype="multipart/form-data">
+    <div class="form-group"></div>
+        <label for="c_photo" class = >Upload photo:</label>
+        <input class = "form-control-file" type="file" id="c_photo" name="c_photo" accept="image/png, image/jpeg, image/jpg"><br>
+        <input type="submit" class="btn btn-primary" value="Upload">
+    </div>
+</form>
+{% else %}
+<form action = "{{ url_for('companies') }}" method = "GET">
+    <button class = "btn btn-primary">Back</button>
+</form>
+{% endif %}
+
+{% endblock %}

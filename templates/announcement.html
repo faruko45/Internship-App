@@ -1,0 +1,85 @@
+{% extends "layout.html" %}
+{% block title %}Announcement{% endblock %}
+{% block content %}
+
+<h1 class="title">Announcement</h1>
+<div class="row">
+  <div class="col">
+    <img src= "data:image/png;base64,{{ ann.photo }}" alt="Profile Photo" class="img-thumbnail rounded float-left">
+  </div>
+  <div class="col">
+    <table class="table float">
+      <tr>
+        <th>Topic:</th>
+        <td>{{ann.topic}}</td>
+      </tr>
+     
+      <tr>
+        <th>Company:</th>
+        <td> {{ann.companyName}}</td>
+      </tr>
+      <tr>
+        <th>Department:</th>
+        <td> {{ann.dname}}</td>
+      </tr>
+      <tr>
+        <th>Last Day:</th>
+        <td> {{ann.announcement_date}}</td>
+      </tr>
+      <tr>
+        <th>Description:</th>
+        <td>{{ann.content}}</td>
+      </tr>
+    </table>
+  </div>
+</div>
+<br>
+
+
+{% if 'company' in session.status %}
+{% if ann.expired == False %}
+<form action="{{ url_for('edit_announcement',ann_id = ann.id)}}" method="GET" name="ann edit">
+  <div class="field is-grouped">
+    <div class="control">
+      <button type="submit" class = "btn btn-primary">Edit Announcement</button>
+    </div>
+<div>
+</form>
+{% endif %}
+<form action="{{ url_for('delete_announcement',ann_id = ann.id)}}" method="POST" name="ann edit">
+  <div class="field is-grouped">
+    <div class="control">
+      <button type="submit" class = "btn btn-danger">DELETE</button>
+    </div>
+<div>
+</form>
+{% endif %}
+
+<form action="{{ url_for('announcement',ann_key = ann.id)}}" method="post" name="ann">
+  
+    <div class="field is-grouped">
+      <div class="control">
+        {% if ann.expired == False %}
+        {% if 'company' in session.status %}
+        <button type="submit" class = "btn btn-warning">Close</button>
+        {% endif %}
+        {% if 'student' in session.status %}
+        <button type="submit" class = "btn btn-primary">Apply</button>
+        {% endif %}
+        {% endif %}
+      </div>
+  <div>
+</form>
+
+<form action="{{ url_for('get_announcements')}}" method="GET" name="product_edit">
+  
+  <div class="field is-grouped">
+    <div class="control">
+      {% if ann.expired == True %}
+      <button type="submit" class = "btn btn-primary">Back</button>
+      {% endif %}
+    </div>
+<div>
+</form>
+
+{% endblock %}

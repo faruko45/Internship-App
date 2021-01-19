@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+{% block title %}Application{% endblock %}
+{% block content %} 
+
+<form name="myform1" action="{{ url_for('accept_app',app_id = application_id) }}" method="POST" class = "float-left">
+    <input type="submit" name="accept" id="accept" value="Accept" class = "float-left btn btn-success" style = "width: 10em;">
+</form>
+
+<form name="myform2" action="{{ url_for('reject_app',app_id =  application_id) }}" method="POST" class = "float-right">
+    <input type="submit" name="reject" id="reject" value="Reject" class = "float-right btn btn-danger" style = "width: 10em;">
+</form>
+<br><br>
+<h3>Applicant Information</h3>
+<div class="row">
+    <div class="col">
+        <img src= "data:image/png;base64,{{ student.photo }}" alt="Profile Photo" class="img-fluid rounded float-left">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item border">{{ student.student_name }} {{ student.surname }}</li>
+            <li class="list-group-item border">{{ student.birthDate }}</li>
+            <li class="list-group-item border">{{ student.fname }}</li>
+            <li class="list-group-item border">{{ student.dname }}</li>
+          </ul>
+    </div>
+    <div class="col">
+        {% for text in s_texts %}
+        {{text.content}} <br>
+        {% endfor %}
+    </div>
+</div>
+<h3>Announcement Information</h3>
+<div class="row">
+    <div class="col">
+        <img src= "data:image/png;base64,{{ announcement.photo }}" alt="Profile Photo" class="img-fluid rounded float-left" style = "width: 20em;">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item border">{{ announcement.topic }}</li>  
+            <li class="list-group-item border">{{ announcement.dname }}</li>
+            <li class="list-group-item border">{{ announcement.announcement_date }}</li>
+        </ul>
+    </div>
+    <div class="col">
+        {{ announcement.content }}
+    </div>
+</div>
+
+
+{% endblock %}

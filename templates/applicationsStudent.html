@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+{% block title %}Your Applications{% endblock %}
+{% block content %} 
+
+<table class="table">
+    <thead class = "thead-light">
+      <tr>
+        <th scope="col">Topic</th>
+        <th scope="col">Company Name</th>
+        <th scope="col">Department</th>
+        <th scope="col">Due date</th>
+        <th scope="col">Status</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for app in applications %}
+      <tr>
+        <td>{{app.topic}}</td>
+        <td>{{app.companyName}}</td>
+        <td>{{app.dname}}</td>
+        <td>{{app.announcement_date}}</td>
+        <td>{{app.app_status}}</td>
+        <td><a href="{{url_for('delete_app',app_id = app.id)}}">DELETE</a></td>
+      </tr>
+      {% endfor %}
+      <tr>
+    </tbody>
+  </table>
+  <h6>Total: {{ count }}</h6>
+
+
+{% endblock %}
