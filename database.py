@@ -3,11 +3,11 @@ import settings
 class Database:
     def __init__(self, app):
         app.config['MYSQL_HOST'] = settings.SQL_PORT
-        app.config['MYSQL_USER'] = 'ubjbhdmtypwhsbbk'
+        app.config['MYSQL_USER'] = ''
         app.config['MYSQL_PASSWORD'] = settings.PASSWORD
-        app.config['MYSQL_DB'] = 'bfyhtlyruvz3akf2nq3h'
+        app.config['MYSQL_DB'] = ''
         app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
-        app.config["SECRET_KEY"] = '8_fCHi3kLIvjmTezEOL2jQ'
+        app.config["SECRET_KEY"] = ''
         mysql = MySQL(app)
         self.dbfile = mysql
 
