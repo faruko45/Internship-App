@@ -198,12 +198,15 @@ def edit_profile():
             mysql = current_app.config['db']
             deps = mysql.get_departments()
             facs = mysql.get_faculties()
-            return render_template('edit_profile.html',deps = deps, facs = facs)
+            inf = mysql.get_student_info_with_id(session['id'])
+            return render_template('edit_profile.html',deps = deps, facs = facs,inf = inf)
         if session['status'] == 'company':
-            return render_template('edit_profile.html')
+            mysql = current_app.config['db']
+            comp = mysql.get_company_info_with_id(session['id'])
+            return render_template('edit_profile.html',comp = comp)
     if request.method == 'POST':
         if session['status'] == 'student':
-            if 'name' in request.form and 'password' in request.form and 'email' in request.form and 'surname' in request.form and 'department' in request.form and 'faculty' in request.form  and 'birthDate' in request.form:
+            if 'name' in request.form and 'password' in request.form and 'email' in request.form and 'surname' in request.form and 'department' in request.form and 'faculty' in request.form  and 'birthDate' in request.form and request.form['birthDate'] != "":
                 name = request.form['name']
                 surname = request.form['surname'] 
                 password = request.form['password'] 
@@ -216,7 +219,10 @@ def edit_profile():
                 account = mysql.get_student_with_email(email)
                 if account and account['e_mail'] != informations['e_mail']:
                     return render_template('information.html',msg = "An acoount exists with this e-mail.")
-                h = hash_password(password)
+                if password == 'dummy':
+                    h = informations['s_password']
+                else:
+                    h = hash_password(password)
                 mysql.update_student(session['id'],name,surname,email,h,birthDate,faculty,department)
                 return redirect(url_for('profile'))  
             else:
@@ -240,7 +246,10 @@ def edit_profile():
                 elif not cname or not password or not email: 
                     msg = 'Please fill out the form !'
                     return render_template('information.html',msg = msg)
-                h = hash_password(password)
+                if password == 'dummy':
+                    h = informations['c_password']
+                else:
+                    h = hash_password(password)
                 mysql.update_company(session['id'],cname,email,h)
                 return redirect(url_for('profile'))
             else:
@@ -322,15 +331,23 @@ def edit_announcement(ann_id):
             photo = request.files['a_photo']
             photo_read = photo.read()
             mysql.update_photo(ann['photo_id'],photo_read)
-        if 'a_topic' in request.form and 'a_date' in request.form and request.form['a_date'] != "" and 'a_department' in request.form and 'a_text' in request.form:
+        if 'a_topic' in request.form and request.form['a_topic'] != "":
             topic = request.form['a_topic']
-            date = request.form['a_date']
+        else:
+            topic = ann['topic']
+        if 'a_department' in request.form and request.form['a_department'] != "":
             dep = request.form['a_department']
-            text = request.form['a_text']
+        else:
+            dep = ann['department_id']
+        if 'a_date' in request.form and request.form['a_date'] != "":
+            date = request.form['a_date']
+        else:
+            date = ann['announcement_date']
+        text = request.form['a_text']
+        mysql.update_text(ann['text_id'],text)
+        mysql.update_announcement(ann_id,topic,date,dep)
+        return redirect(url_for('announcement',ann_key = ann_id))
 
-            mysql.update_text(ann['text_id'],text)
-            mysql.update_announcement(ann_id,topic,date,dep)
-            return redirect(url_for('announcement',ann_key = ann_id))
             
 
 def delete_announcement(ann_id):
@@ -355,7 +372,16 @@ def get_applications_company():
         mysql = current_app.config['db']
         applications = mysql.get_all_applications_companies(session['id'])
         count = mysql.get_count_applications_companies(session['id'])
-        return render_template('applicationsCompanies.html',applications=applications,count=count)
+        counts = mysql.count_apps_wrt_status(session['id'])
+        app_count = {'Accepted':0,'Rejected':0, 'Pending':0}
+        for x in counts:
+            if x['app_status'] == 'Accepted':
+                app_count['Accepted'] = x['count']
+            elif x['app_status'] == 'Rejected':
+                app_count['Rejected'] = x['count']
+            elif x['app_status'] == 'Pending':
+                app_count['Pending'] = x['count']
+        return render_template('applicationsCompanies.html',applications=applications,count=count,app_count=app_count)
 
 def application_action(app_id,s_id):
     if request.method == 'GET':

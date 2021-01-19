@@ -1,6 +1,12 @@
 {% extends "layout.html" %}
 {% block title %} Profile {% endblock %}
 {% block content %} 
+<form action = "{{ url_for('delete_profile') }}" method = "GET">
+    <div class="form-group">
+        <button class = "btn btn-danger">DELETE MY ACCOUNT</button>
+    </div>
+</form>
+<br>
 <div class = "row justify-content-between">
     <div class="col">
         <img src= "data:image/png;base64,{{ informations.photo }}" alt="Profile Photo" class="img-thumbnail rounded float-left" style = "width: 14em;">
@@ -18,30 +24,23 @@
     </div>
 
 </div>
-
-<form action = "{{ url_for('edit_text') }}" method = "GET">
+<br>
+<form action = "{{ url_for('edit_text') }}" method = "GET" >
     <div class="form-group">
         <button class = "btn btn-primary">Edit Texts</button>
     </div>
 </form>
-<br>
-<form action = "{{ url_for('edit_profile') }}" method = "GET">
+<form action = "{{ url_for('edit_profile') }}" method = "GET" >
     <div class="form-group">
-        <button class = "btn btn-primary">Edit Other Informations</button>
-    </div>
-</form>
-<br>
-<form action = "{{ url_for('delete_profile') }}" method = "GET">
-    <div class="form-group">
-        <button class = "btn btn-danger">DELETE MY ACCOUNT</button>
+        <button class = "btn btn-primary">Edit Profile Informations</button>
     </div>
 </form>
 <hr>
 <form action = "{{ url_for('profile') }}" method = "POST" enctype="multipart/form-data">
     <div class="form-group">
         <label for="s_photo" class = "float-left">Upload profile photo:</label>
-        <input class = "form-control-file float-left" type="file" id="s_photo" name="s_photo" accept="image/png, image/jpeg, image/jpg"><br>
-        <input type="submit" class="btn btn-primary float-right" value="Upload">
+        <input class = "form-control-file" type="file" id="s_photo" name="s_photo" accept="image/png, image/jpeg, image/jpg"><br>
+        <input type="submit" class="btn btn-primary" value="Upload">
     </div>
 </form>
 {% endblock %}

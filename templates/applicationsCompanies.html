@@ -4,78 +4,116 @@
 <br>
 <h4>Total Applications: {{ count }}</h4> 
 <br>
-<h3>Pending Applications</h3>
-<table class="table">
-    <thead class = "thead-light">
-      <tr>
-        <th scope="col">Student Name</th>
-        <th scope="col">Topic</th>
-        <th scope="col">Department</th>
-        <th scope="col">Due date</th>
-        <th scope="col">Response</th>
-      </tr>
-    </thead>
-    <tbody>
-    {% for app in applications %}
-    {% if 'Pending' in app.app_status %}
-      <tr>
-        <td>{{app.student_name}} {{app.surname}}</td>
-        <td>{{app.topic}}</td>
-        <td>{{app.dname}}</td>
-        <td>{{app.announcement_date}}</td>
-        <td><a href="{{ url_for('application_action',app_id = app.id, s_id = app.student_id)}}">Analyze</a></td>
-      </tr>
-    {% endif %}
-    {% endfor %}
-    </tbody>
-</table>
+<div class = "row justify-content-around">
+  <button id = "b1" class = "btn btn-primary">Pending Applications</button>
+  <button id = "b2" class = "btn btn-primary">Accepted Applications</button>
+  <button id = "b3" class = "btn btn-primary">Rejected Applications</button>
+</div>
 <br>
-<h3>Accepted Applications</h3>
-<table class="table">
-    <thead class = "thead-light">
-      <tr>
-        <th scope="col">Student Name</th>
-        <th scope="col">Topic</th>
-        <th scope="col">Department</th>
-        <th scope="col">Due date</th>
-      </tr>
-    </thead>
-    <tbody>
-    {% for app in applications %}
-    {% if 'Accepted' in app.app_status %}
-      <tr>
-        <td>{{app.student_name}} {{app.surname}}</td>
-        <td>{{app.topic}}</td>
-        <td>{{app.dname}}</td>
-        <td>{{app.announcement_date}}</td>
-      </tr>
-    {% endif %}
-    {% endfor %}
-    </tbody>
-</table>
-<br>
-<h3>Rejected Applications</h3>
-<table class="table">
-    <thead class = "thead-light">
-      <tr>
-        <th scope="col">Student Name</th>
-        <th scope="col">Topic</th>
-        <th scope="col">Department</th>
-        <th scope="col">Due date</th>
-      </tr>
-    </thead>
-    <tbody>
-    {% for app in applications %}
-    {% if 'Rejected' in app.app_status %}
-      <tr>
-        <td>{{app.student_name}} {{app.surname}}</td>
-        <td>{{app.topic}}</td>
-        <td>{{app.dname}}</td>
-        <td>{{app.announcement_date}}</td>
-      </tr>
-    {% endif %}
-    {% endfor %}
-    </tbody>
-</table>
+<div id = 'a1'>
+  <h3>Pending Applications: {{ app_count.Pending }}</h3>
+  <table class="table">
+      <thead class = "thead-light">
+        <tr>
+          <th scope="col">Student Name</th>
+          <th scope="col">Topic</th>
+          <th scope="col">Department</th>
+          <th scope="col">Due date</th>
+          <th scope="col">Response</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for app in applications %}
+      {% if 'Pending' in app.app_status %}
+        <tr>
+          <td>{{app.student_name}} {{app.surname}}</td>
+          <td>{{app.topic}}</td>
+          <td>{{app.dname}}</td>
+          <td>{{app.announcement_date}}</td>
+          <td><a href="{{ url_for('application_action',app_id = app.id, s_id = app.student_id)}}">Analyze</a></td>
+        </tr>
+      {% endif %}
+      {% endfor %}
+      </tbody>
+  </table>
+</div>
+<div id = 'a2' style = 'display:none'>
+  <h3>Accepted Applications: {{ app_count.Accepted }}</h3>
+  <table class="table">
+      <thead class = "thead-light">
+        <tr>
+          <th scope="col">Student Name</th>
+          <th scope="col">Topic</th>
+          <th scope="col">Department</th>
+          <th scope="col">Due date</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for app in applications %}
+      {% if 'Accepted' in app.app_status %}
+        <tr>
+          <td>{{app.student_name}} {{app.surname}}</td>
+          <td>{{app.topic}}</td>
+          <td>{{app.dname}}</td>
+          <td>{{app.announcement_date}}</td>
+        </tr>
+      {% endif %}
+      {% endfor %}
+      </tbody>
+  </table>
+</div>
+<div id = 'a3' style = "display: none;">
+  <h3>Rejected Applications: {{ app_count.Rejected }}</h3>
+  <table class="table">
+      <thead class = "thead-light">
+        <tr>
+          <th scope="col">Student Name</th>
+          <th scope="col">Topic</th>
+          <th scope="col">Department</th>
+          <th scope="col">Due date</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for app in applications %}
+      {% if 'Rejected' in app.app_status %}
+        <tr>
+          <td>{{app.student_name}} {{app.surname}}</td>
+          <td>{{app.topic}}</td>
+          <td>{{app.dname}}</td>
+          <td>{{app.announcement_date}}</td>
+        </tr>
+      {% endif %}
+      {% endfor %}
+      </tbody>
+  </table>
+</div>
 
+<script>
+
+  let btnAdd1 = document.querySelector('#b1');
+  let btnAdd2 = document.querySelector('#b2');
+  let btnAdd3 = document.querySelector('#b3');
+  let d1 = document.querySelector('#a1');
+  let d2 = document.querySelector('#a2');
+  let d3 = document.querySelector('#a3');
+
+  btnAdd1.addEventListener('click', () => {
+      d2.style.display="none"
+      d1.style.display="block"
+      d3.style.display="none"
+});
+btnAdd2.addEventListener('click', () => {
+      d2.style.display="block"
+      d1.style.display="none"
+      d3.style.display="none"
+});
+btnAdd3.addEventListener('click', () => {
+      d2.style.display="none"
+      d1.style.display="none"
+      d3.style.display="block"
+});
+
+
+
+</script>
 {% endblock %}

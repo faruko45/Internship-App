@@ -3,11 +3,11 @@ import settings
 class Database:
     def __init__(self, app):
         app.config['MYSQL_HOST'] = settings.SQL_PORT
-        app.config['MYSQL_USER'] = ''
+        app.config['MYSQL_USER'] = 'ubjbhdmtypwhsbbk'
         app.config['MYSQL_PASSWORD'] = settings.PASSWORD
-        app.config['MYSQL_DB'] = ''
+        app.config['MYSQL_DB'] = 'bfyhtlyruvz3akf2nq3h'
         app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
-        app.config["SECRET_KEY"] = ''
+        app.config["SECRET_KEY"] = '8_fCHi3kLIvjmTezEOL2jQ'
         mysql = MySQL(app)
         self.dbfile = mysql
 
@@ -28,7 +28,7 @@ class Database:
 
     def get_student_info_with_id(self,s_id):
         cursor = self.dbfile.connection.cursor() 
-        cursor.execute("""select students.student_name, students.surname, students.photo_id,students.birthDate, students.e_mail,faculties.fname, departments.dname, photos.photo from students
+        cursor.execute("""select students.student_name,students.s_password, students.surname, students.photo_id,students.birthDate, students.e_mail,faculties.fname, departments.dname, photos.photo from students
         LEFT JOIN faculties on students.faculty_id = faculties.id
         LEFT JOIN departments on students.department_id = departments.id
         LEFT JOIN photos on students.photo_id = photos.id
@@ -131,7 +131,7 @@ class Database:
 
     def get_announcement(self,a_id):
         cursor = self.dbfile.connection.cursor()
-        cursor.execute("""select internship_announcements.id, topic, announcement_date, companies.companyName, departments.dname, texts.content, internship_announcements.text_id,internship_announcements.photo_id,photos.photo, internship_announcements.expired from internship_announcements
+        cursor.execute("""select internship_announcements.id, topic, announcement_date, companies.companyName, departments.dname,internship_announcements.department_id, texts.content, internship_announcements.text_id,internship_announcements.photo_id,photos.photo, internship_announcements.expired from internship_announcements
         INNER JOIN companies on internship_announcements.company_id = companies.id
         INNER JOIN departments on internship_announcements.department_id = departments.id
         INNER JOIN texts on internship_announcements.text_id = texts.id
@@ -250,6 +250,14 @@ class Database:
         LEFT JOIN students ON internship_applications.student_id = students.id
         INNER JOIN photos ON internship_announcements.photo_id = photos.id
         WHERE internship_announcements.company_id = %s """,(c_id,)) 
+        return  cursor.fetchall()
+
+    def count_apps_wrt_status(self,c_id):
+        cursor = self.dbfile.connection.cursor() 
+        cursor.execute("""select app_status,Count(*) as count from internship_applications
+        INNER JOIN internship_announcements ON internship_applications.internshipAnnouncement_id = internship_announcements.id
+        WHERE internship_announcements.company_id = %s
+        group by app_status""",(c_id,)) 
         return  cursor.fetchall()
 
     def get_count_applications_students(self,s_id):

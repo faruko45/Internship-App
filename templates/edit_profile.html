@@ -8,21 +8,29 @@
 <form action="{{ url_for('edit_profile') }}" method="POST"> 
     <div class="msg">{{ msg }}</div>
     <div class = "form-group">
-      <input id="email" name="email" type="text" placeholder="Enter Your e-mail" class="form-control"/></br></br> 
-      <input id="password" name="password" type="password" placeholder="Enter Your Password" class="form-control"/></br></br> 
-      <input id="name" name="name" type="text" placeholder="Enter Your Name" class="form-control"/></br></br>
-      <input id="surname" name="surname" type="text" placeholder="Enter Your Surname" class=" form-control" /></br></br>
-      <input id="birthDate" name="birthDate" type="date" placeholder="Enter Your Birth Date" class="form-control"/></br></br> 
+      <input id="email" name="email" type="text" value="{{ inf.e_mail }}" class="form-control"/></br></br> 
+      <input id="password" name="password" type="password" value="dummy" class="form-control"/></br></br> 
+      <input id="name" name="name" type="text" value="{{ inf.student_name }}"class="form-control"/></br></br>
+      <input id="surname" name="surname" type="text" value="{{ inf.surname }}" class=" form-control" /></br></br>
+      <input id="birthDate" name="birthDate" type="date" value="{{ inf.birthDate}}" class="form-control"/></br></br> 
     <select name="faculty" id="faculty" class = "form-control">
       {% for fac in facs %}
-       <option value='{{ fac.id }}'>{{ fac.fname }}</option>
+      {% if inf.fname == fac.fname %}
+      <option value='{{ fac.id }}' selected>{{ fac.fname }}</option>
+      {% else %}
+      <option value='{{ fac.id }}'>{{ fac.fname }}</option>
+      {% endif %}
       {% endfor %}
     </select>
     <br><br>
     <select name="department" id="department" class = "form-control">
-     {% for dep in deps%}
-       <option value='{{ dep.id }}'>{{ dep.dname }}</option>
-     {% endfor %}
+      {% for dep in deps %}
+      {% if inf.dname == dep.dname %}
+      <option value='{{ dep.id }}' selected>{{ dep.dname }}</option>
+      {% else %}
+      <option value='{{ dep.id }}'>{{ dep.dname }}</option>
+      {% endif %}
+      {% endfor %}
     </select>
     <br><br>
     <input type="submit" class="btn btn-primary form-control" value="Save">
@@ -32,9 +40,9 @@
 <form action="{{ url_for('edit_profile') }}" method="POST">
     <div class = "form-group">
       <div class="msg">{{ msg }}</div> 
-      <input id="email" name="email" type="text" placeholder="Enter Your e-mail" class="textbox form-control"/></br></br> 
-      <input id="password" name="password" type="password" placeholder="Enter Your Password" class="textbox form-control"/></br></br> 
-      <input id="cname" name="cname" type="text" placeholder="Enter the Company Name" class="textbox form-control"/></br></br>
+      <input id="email" name="email" type="text" value="{{ comp.e_mail }}" class="textbox form-control"/></br></br> 
+      <input id="password" name="password" type="password" value="dummy" class="textbox form-control"/></br></br> 
+      <input id="cname" name="cname" type="text" value ="{{comp.companyName}}" class="textbox form-control"/></br></br>
       <input type="submit" class="btn btn-primary form-control" value="Save"></br></br>
     </div> 
   </form> 
