@@ -4,7 +4,7 @@ import MySQLdb.cursors
 import re 
 import settings,views
 from database import Database
-from werkzeug.datastructures import  FileStorage
+from werkzeug.datastructures import FileStorage
 from base64 import b64encode
 import hashlib, binascii, os
 
@@ -214,6 +214,11 @@ def edit_profile():
                 faculty = request.form['faculty']
                 department = request.form['department']
                 birthDate = request.form['birthDate']
+                if name == "" or surname == "" or password == "":
+                    return render_template('information.html',msg = "missing parts")
+                if not re.match(r'[^@]+@[^@]+\.[^@]+', email): 
+                    msg = 'Invalid email address !'
+                    return render_template('information.html',msg = msg)
                 mysql=current_app.config["db"]
                 informations = mysql.get_student_info_with_id(session['id'])
                 account = mysql.get_student_with_email(email)
@@ -235,6 +240,8 @@ def edit_profile():
                 mysql=current_app.config["db"] 
                 account= mysql.get_company_with_email(email)
                 informations = mysql.get_company_info_with_id(session['id'])
+                if cname == "" or password == "":
+                    return render_template('information.html',msg = "missing parts")
                 if account and account['e_mail'] != informations['e_mail']:
                     return render_template('information.html',msg = "An acoount exists with this e-mail.")
                 elif not re.match(r'[^@]+@[^@]+\.[^@]+', email): 
